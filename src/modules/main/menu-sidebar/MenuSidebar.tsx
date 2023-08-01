@@ -1,11 +1,11 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
-import {Link} from 'react-router-dom';
-import {MenuItem} from '@components';
-import {PfImage} from '@profabric/react-components';
-import styled from 'styled-components';
-import {SidebarSearch} from '@app/components/sidebar-search/SidebarSearch';
-import i18n from '@app/utils/i18n';
+import React from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { MenuItem } from "@components";
+import { PfImage } from "@profabric/react-components";
+import styled from "styled-components";
+import { SidebarSearch } from "@app/components/sidebar-search/SidebarSearch";
+import i18n from "@app/utils/i18n";
 
 export interface IMenuItem {
   name: string;
@@ -16,32 +16,67 @@ export interface IMenuItem {
 
 export const MENU: IMenuItem[] = [
   {
-    name: i18n.t('menusidebar.label.dashboard'),
-    icon: 'fas fa-tachometer-alt nav-icon',
-    path: '/'
+    name: i18n.t("menusidebar.label.dashboard"),
+    icon: "fas fa-tachometer-alt nav-icon",
+    path: "/",
   },
   {
-    name: i18n.t('menusidebar.label.blank'),
-    icon: 'fas fa-wrench nav-icon',
-    path: '/blank'
-  },
-  {
-    name: i18n.t('menusidebar.label.mainMenu'),
-    icon: 'far fa-caret-square-down nav-icon',
+    name: i18n.t("Mantenimientos"),
+    icon: "far fa-caret-square-down nav-icon",
     children: [
       {
-        name: i18n.t('menusidebar.label.subMenu'),
-        icon: 'fas fa-hammer nav-icon',
-        path: '/sub-menu-1'
+        name: i18n.t("Usuarios"),
+        icon: "fas fa-hammer nav-icon",
+        path: "/usuariosForm",
       },
-
       {
-        name: i18n.t('menusidebar.label.blank'),
-        icon: 'fas fa-cogs nav-icon',
-        path: '/sub-menu-2'
-      }
-    ]
-  }
+        name: i18n.t("Residentes"),
+        icon: "fas fa-cogs nav-icon",
+        path: "/residentesForm",
+      },
+      {
+        name: i18n.t("Propietarios"),
+        icon: "fas fa-cogs nav-icon",
+        path: "/propietariosForm",
+      },
+      {
+        name: i18n.t("Residencias"),
+        icon: "fas fa-cogs nav-icon",
+        path: "/residenciasForm",
+      },
+    ],
+  },
+  {
+    name: i18n.t("Tablas"),
+    icon: "far fa-caret-square-down nav-icon",
+    children: [
+      {
+        name: i18n.t("Usuarios"),
+        icon: "fas fa-hammer nav-icon",
+        path: "/usuariosTable",
+      },
+      {
+        name: i18n.t("Residentes"),
+        icon: "fas fa-cogs nav-icon",
+        path: "/residentesTable",
+      },
+      {
+        name: i18n.t("Propietarios"),
+        icon: "fas fa-cogs nav-icon",
+        path: "/propietariosTable",
+      },
+      {
+        name: i18n.t("Residencias"),
+        icon: "fas fa-cogs nav-icon",
+        path: "/residenciasTable",
+      },
+    ],
+  },
+  {
+    name: i18n.t("Reportes"),
+    icon: "far fa-caret-square-down nav-icon",
+    path: "/reportes",
+  },
 ];
 
 const StyledBrandImage = styled(PfImage)`
@@ -73,7 +108,7 @@ const MenuSidebar = () => {
           height={33}
           rounded
         />
-        <span className="brand-text font-weight-light">AdminLTE 3</span>
+        <span className="brand-text font-weight-light">ITSCO Condominios</span>
       </Link>
       <div className="sidebar">
         <div className="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -89,7 +124,7 @@ const MenuSidebar = () => {
           </div>
           <div className="info">
             <Link to="/profile" className="d-block">
-              {authentication.profile.email}
+              {authentication.profile.name} {authentication.profile.family_name}
             </Link>
           </div>
         </div>
@@ -98,11 +133,11 @@ const MenuSidebar = () => {
           <SidebarSearch />
         </div>
 
-        <nav className="mt-2" style={{overflowY: 'hidden'}}>
+        <nav className="mt-2" style={{ overflowY: "hidden" }}>
           <ul
             className={`nav nav-pills nav-sidebar flex-column${
-              menuItemFlat ? ' nav-flat' : ''
-            }${menuChildIndent ? ' nav-child-indent' : ''}`}
+              menuItemFlat ? " nav-flat" : ""
+            }${menuChildIndent ? " nav-child-indent" : ""}`}
             role="menu"
           >
             {MENU.map((menuItem: IMenuItem) => (

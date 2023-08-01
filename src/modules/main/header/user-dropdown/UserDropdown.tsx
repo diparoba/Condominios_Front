@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DateTime } from 'luxon';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { PfDropdown, PfImage } from '@profabric/react-components';
+import { PfDropdown } from '@profabric/react-components';
 import { setAuthentication } from '@app/store/reducers/auth';
 import { GoogleProvider } from '@app/utils/oidc-providers';
-
+/*
 const StyledSmallUserImage = styled(PfImage)`
   margin-top: 3px;
   --pf-box-shadow: 0 3px 6px #00000029, 0 3px 6px #0000003b !important;
@@ -17,7 +17,7 @@ const StyledBigUserImage = styled(PfImage)`
   --pf-box-shadow: 0 3px 6px #00000029, 0 3px 6px #0000003b !important;
   --pf-border: 3px solid #fff3;
 `;
-
+*/
 const UserHeader = styled.li`
   display: flex;
   align-items: center;
@@ -103,6 +103,15 @@ export const StyledDropdown = styled(PfDropdown)`
   }
 `;
 
+const CircleButton = styled.button`
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: none;
+  background-color: #007bff; // Cambia esto al color que prefieras
+  color: white; // Cambia esto al color que prefieras
+`;
+
 declare const FB: any;
 
 const UserDropdown = () => {
@@ -140,25 +149,9 @@ const UserDropdown = () => {
 
   return (
     <StyledDropdown isOpen={dropdownOpen} hideArrow>
-      <StyledSmallUserImage
-        slot="button"
-        src={authentication.profile.picture}
-        fallbackSrc="/img/default-profile.png"
-        alt="User"
-        width={25}
-        height={25}
-        rounded
-      />
+      <CircleButton slot="button">M</CircleButton> {/* Puedes cambiar "M" por cualquier otra cosa */}
       <div slot="menu">
         <UserHeader className=" bg-primary">
-          <StyledBigUserImage
-            src={authentication.profile.picture}
-            fallbackSrc="/img/default-profile.png"
-            alt="User"
-            width={90}
-            height={90}
-            rounded
-          />
           <p>
             {authentication.profile.email}
             <small>

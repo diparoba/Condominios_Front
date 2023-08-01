@@ -10,16 +10,13 @@ import { PfCheckbox, PfButton } from '@profabric/react-components';
 import * as Yup from 'yup';
 
 import {
-  GoogleProvider,
   authLogin,
-  facebookLogin,
 } from '@app/utils/oidc-providers';
 import { Form, InputGroup } from 'react-bootstrap';
+import { loginByAuth } from '@app/services/auth';
 
 const Login = () => {
   const [isAuthLoading, setAuthLoading] = useState(false);
-  const [isGoogleAuthLoading, setGoogleAuthLoading] = useState(false);
-  const [isFacebookAuthLoading, setFacebookAuthLoading] = useState(false);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -28,41 +25,24 @@ const Login = () => {
   const login = async (email: string, password: string) => {
     try {
       setAuthLoading(true);
-      const response = await authLogin(email, password);
-      dispatch(setAuthentication(response as any));
+      const response = await loginByAuth(email, password);
+      const { token, userId, name, lastname, email: userEmail, roles } = response;
+      const user = {
+        access_token: token,
+        profile: {
+          sub: userId,
+          name: name,
+          family_name: lastname,
+          email: userEmail,
+          role: roles,
+        },
+      };
+      dispatch(setAuthentication(user as any));
       toast.success('Login is succeed!');
       setAuthLoading(false);
-      // dispatch(loginUser(token));
       navigate('/');
     } catch (error: any) {
       setAuthLoading(false);
-      toast.error(error.message || 'Failed');
-    }
-  };
-
-  const loginByGoogle = async () => {
-    try {
-      setGoogleAuthLoading(true);
-      const response = await GoogleProvider.signinPopup();
-      dispatch(setAuthentication(response as any));
-      toast.success('Login is succeeded!');
-      setGoogleAuthLoading(false);
-      navigate('/');
-    } catch (error: any) {
-      setGoogleAuthLoading(false);
-      toast.error(error.message || 'Failed');
-    }
-  };
-
-  const loginByFacebook = async () => {
-    try {
-      setFacebookAuthLoading(true);
-      const response = await facebookLogin();
-      dispatch(setAuthentication(response as any));
-      setFacebookAuthLoading(false);
-      navigate('/');
-    } catch (error: any) {
-      setFacebookAuthLoading(false);
       toast.error(error.message || 'Failed');
     }
   };
@@ -91,8 +71,8 @@ const Login = () => {
       <div className="card card-outline card-primary">
         <div className="card-header text-center">
           <Link to="/" className="h1">
-            <b>Admin</b>
-            <span>LTE</span>
+            <b>ITSCO</b>
+            <span>Condominio</span>
           </Link>
         </div>
         <div className="card-body">
@@ -160,37 +140,12 @@ const Login = () => {
                   block
                   type="submit"
                   loading={isAuthLoading}
-                  disabled={isFacebookAuthLoading || isGoogleAuthLoading}
                 >
                   {t<string>('login.button.signIn.label')}
                 </PfButton>
               </div>
             </div>
           </form>
-          <div className="social-auth-links text-center mt-2 mb-3">
-            <PfButton
-              block
-              className="mb-2"
-              onClick={loginByFacebook}
-              loading={isFacebookAuthLoading}
-              disabled={isAuthLoading || isGoogleAuthLoading}
-            >
-              <i className="fab fa-facebook mr-2" />
-              {t<string>('login.button.signIn.social', {
-                what: 'Facebook',
-              })}
-            </PfButton>
-            <PfButton
-              block
-              theme="danger"
-              onClick={loginByGoogle}
-              loading={isGoogleAuthLoading}
-              disabled={isAuthLoading || isFacebookAuthLoading}
-            >
-              <i className="fab fa-google mr-2" />
-              {t<string>('login.button.signIn.social', { what: 'Google' })}
-            </PfButton>
-          </div>
           <p className="mb-1">
             <Link to="/forgot-password">
               {t<string>('login.label.forgotPass')}
